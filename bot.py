@@ -20,14 +20,14 @@ def format_time(ts):
         return ts
 
 
-@tasks.loop(hours=24)
+@tasks.loop(hours=1)
 async def sub_messages():
     if not os.path.exists('current_marathons.json'):
         with open('current_marathons.json', 'w') as newfile:
             newfile.write(json.dumps({}))
     with open('current_marathons.json') as marathon_file:
         marathon_dict = json.load(marathon_file)
-    sub_channel = client.get_channel(958009642343075860)
+    sub_channel = client.get_channel(958165384962396192)
     response = requests.get("https://oengus.io/api/marathons")
     x = json.loads(response.text)
     max_subs = len(x['open'])

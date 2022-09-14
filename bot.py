@@ -23,8 +23,6 @@ def format_time(ts):
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    clean_channel = client.get_channel(958165384962396192)
-    await clean_channel.purge()
     sub_messages.start()
 
 

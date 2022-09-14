@@ -23,8 +23,10 @@ def format_time(ts):
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    clean_channel = client.get_channel(958009642343075860)
+    await clean_channel.purge()
     sub_messages.start()
-    
+
 
 @tasks.loop(hours=1)
 async def sub_messages():
@@ -91,7 +93,6 @@ async def sub_messages():
                 sub_num += 1
     with open('current_marathons.json', 'w') as newfile:
         newfile.write(json.dumps(marathon_dict))
-
 
 
 client.run(os.getenv('DISCORD_TOKEN'))

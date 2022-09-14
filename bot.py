@@ -1,14 +1,14 @@
 import json
 import os
 from datetime import datetime
+from discord.utils import get
 import copy
 
 import discord
 import requests
 from discord.ext import tasks
-from dotenv import load_dotenv
+import tokens
 
-load_dotenv()
 client = discord.Client(intents=discord.Intents.default())
 
 
@@ -33,7 +33,8 @@ async def sub_messages():
             newfile.write(json.dumps({}))
     with open('current_marathons.json') as marathon_file:
         marathon_dict = json.load(marathon_file)
-    sub_channel = client.get_channel(958165384962396192)
+    sub_channel = get(client.get_all_channels(), name="marathon-alerts")
+    print(sub_channel)
     response = requests.get("https://oengus.io/api/marathons")
     x = json.loads(response.text)
     max_subs = len(x['open'])
@@ -93,4 +94,4 @@ async def sub_messages():
         newfile.write(json.dumps(marathon_dict))
 
 
-client.run(os.getenv('DISCORD_TOKEN'))
+client.run(tokens.DISCORD_TOKEN)

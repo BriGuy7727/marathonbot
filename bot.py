@@ -23,7 +23,7 @@ def format_time(ts):
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    clean_channel = client.get_channel(958009642343075860)
+    clean_channel = client.get_channel(958165384962396192)
     await clean_channel.purge()
     sub_messages.start()
 
@@ -35,7 +35,7 @@ async def sub_messages():
             newfile.write(json.dumps({}))
     with open('current_marathons.json') as marathon_file:
         marathon_dict = json.load(marathon_file)
-    sub_channel = client.get_channel(958009642343075860)
+    sub_channel = client.get_channel(958165384962396192)
     response = requests.get("https://oengus.io/api/marathons")
     x = json.loads(response.text)
     max_subs = len(x['open'])

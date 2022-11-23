@@ -34,7 +34,6 @@ async def sub_messages():
     with open('current_marathons.json') as marathon_file:
         marathon_dict = json.load(marathon_file)
     sub_channel = get(client.get_all_channels(), name="marathon-alerts")
-    print(sub_channel)
     response = requests.get("https://oengus.io/api/v1/marathons")
     x = json.loads(response.text)
     max_subs = len(x['open'])

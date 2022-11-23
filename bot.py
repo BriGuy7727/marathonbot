@@ -35,7 +35,7 @@ async def sub_messages():
         marathon_dict = json.load(marathon_file)
     sub_channel = get(client.get_all_channels(), name="marathon-alerts")
     print(sub_channel)
-    response = requests.get("https://oengus.io/api/marathons")
+    response = requests.get("https://oengus.io/api/v1/marathons")
     x = json.loads(response.text)
     max_subs = len(x['open'])
     sub_num = 0
@@ -55,7 +55,7 @@ async def sub_messages():
                 if current['id'] in marathon_dict:
                     pass
                 else:
-                    details = requests.get(f"https://oengus.io/api/marathons/{current['id']}")
+                    details = requests.get(f"https://oengus.io/api/v1/marathons/{current['id']}")
                     d = json.loads(details.text)
                     if current['onsite']:
                         try:
@@ -65,7 +65,7 @@ async def sub_messages():
                     else:
                         eventloc = "Online"
                     embed.title = f"{current['name']}"
-                    embed.url = f'https://v1.oengus.io/marathon/{current["id"]}'
+                    embed.url = f'https://v1.oengus.io/v1/marathon/{current["id"]}'
                     if d['description'] and len(d['description']) > 500:
                         embed.description = ''.join([str(d['description'])[0:500], "..."])
                     else:

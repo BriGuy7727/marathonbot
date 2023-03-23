@@ -12,6 +12,19 @@ import tokens
 client = discord.Client(intents=discord.Intents.default())
 
 
+async def purge_channels():
+    def is_me(m):
+        return m.author == client.user
+    with open('current_marathons.json', 'w') as purgefile:
+        purgefile.write(json.dumps({}))
+    try:
+        guilds = [guild async for guild in client.fetch_guilds()]
+        for x in guilds:
+            clean_channel = get(client.get_all_channels(), guild=x, name='marathon-alerts')
+            await clean_channel.purge(check=is_me)
+    except AttributeError:
+        print("dang")
+
 def format_time(ts):
     try:
         newtime = datetime.strptime(ts, '%Y-%m-%dT%H:%M:%SZ').strftime("%m/%d/%Y")
@@ -23,6 +36,7 @@ def format_time(ts):
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    await purge_channels()
     sub_messages.start()
 
 
@@ -64,7 +78,8 @@ async def sub_messages():
                     else:
                         eventloc = "Online"
                     embed.title = f"{current['name']}"
-                    embed.url = f'https://v1.oengus.io/marathon/{current["id"]}'
+                    embed.url = f'https://v1.oengus.io' \
+                                f'/marathon/{current["id"]}'
                     if d['description'] and len(d['description']) > 500:
                         embed.description = ''.join([str(d['description'])[0:500], "..."])
                     else:
